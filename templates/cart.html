@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ Hàng</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar">
+        <nav class="nav-section">
+            <div class="nav-title">Dịch Vụ</div>
+            <div class="nav-links">
+                <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Trang Chủ</a>
+                <a href="{{ url_for('health_check') }}"><i class="fas fa-heartbeat"></i> Kiểm Tra Sức Khỏe</a>
+                <a href="{{ url_for('sell_medicine') }}"><i class="fas fa-shopping-cart"></i> Cửa Hàng</a>
+                <a href="{{ url_for('cart') }}" class="active"><i class="fas fa-cart-plus"></i> Giỏ Hàng</a>
+            </div>
+        </nav>
+        <div class="divider"></div>
+        <nav class="nav-section">
+            <div class="nav-title"></div>
+            <div class="nav-links"></div>
+        </nav>
+    </div>
+    <div class="cart-container">
+        <h1>Giỏ hàng của bạn</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="alert-messages">
+                    {% for category, message in messages %}
+                        <li class="alert {{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Tổng giá</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div class="cart-summary">
+            <p><strong>Tổng cộng:</strong> <span id="total-price">đ</span></p>
+            <form action="{{ url_for('payment') }}" method="POST">
+                <button type="submit" class="checkout-btn">Thanh toán</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        {% if 'Thanh toán thành công!' in get_flashed_messages() %}
+            localStorage.removeItem("cart");
+            setTimeout(function() {
+                location.reload();
+            }, 1000);
+        {% endif %}
+    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        // In ra nội dung của localStorage với key 'cart'
+        document.addEventListener("DOMContentLoaded", function() {
+            let cart = localStorage.getItem('cart');
+            if (cart) {
+                console.log("Nội dung của localStorage 'cart':", JSON.parse(cart));
+            } else {
+                console.log("Không có dữ liệu nào trong 'cart'");
+            }
+        });
+    </script>
+        <script>
+            var cartData = {{ cart | tojson | safe }};
+            if (cartData && cartData.length > 0) {
+                localStorage.setItem('cart', JSON.stringify(cartData));
+                console.log('Cart data saved to localStorage:', cartData);
+            } else {
+                console.log('No items in cart.');
+            }
+        </script>    
+</body>
+</html>

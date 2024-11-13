@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Durian Health Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar">
+        <nav class="nav-section">
+            <div class="nav-title">Dịch Vụ</div>
+            <div class="nav-links">
+                <a href="{{ url_for('index') }}" class="active"><i class="fas fa-home"></i> Trang Chủ</a>
+                <a href="{{ url_for('health_check') }}"><i class="fas fa-heartbeat"></i> Kiểm Tra Sức Khỏe</a>
+                <a href="{{ url_for('sell_medicine') }}"><i class="fas fa-shopping-cart"></i> Cửa Hàng</a>
+                <a href="{{ url_for('cart') }}"><i class="fas fa-cart-plus"></i> Giỏ Hàng</a>
+            </div>
+        </nav>
+    
+        <div class="divider"></div>
+    
+        <nav class="nav-section">
+            <div class="nav-title"></div>
+            
+            <div class="nav-links">
+                
+            </div>
+        </nav>
+    </div>
+    
+    <div class="main-content">
+        <div class="hero-image">
+            <img src="https://static.vecteezy.com/system/resources/thumbnails/008/506/991/small_2x/durian-collection-fruits-png.png" alt="Cây sầu riêng">
+        </div>
+        <h1 class="project-title">Phân tích sức khỏe sầu riêng</h1>
+        <p class="instruction">Phân tích và kiểm tra sức khỏe cây sầu riêng của bạn một cách dễ dàng!</p>
+        <a href="{{ url_for('health_check') }}" class="cta-button">Bắt đầu phân tích</a>
+    </div>
+
+
+    
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiểm Tra Sức Khỏe - Lá Sầu Riêng</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        #ub{
+            width: 100%; 
+            height: auto;
+            max-height: 400px; 
+            object-fit: cover; 
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <nav class="nav-section">
+            <div class="nav-title">Dịch Vụ</div>
+            <div class="nav-links">
+                <a href="{{ url_for('index') }}" ><i class="fas fa-home"></i> Trang Chủ</a>
+                <a href="{{ url_for('health_check') }}" class="active"><i class="fas fa-heartbeat"></i> Kiểm Tra Sức Khỏe</a>
+                <a href="{{ url_for('sell_medicine') }}"><i class="fas fa-shopping-cart"></i> Cửa Hàng</a>
+                <a href="{{ url_for('cart') }}"><i class="fas fa-cart-plus"></i> Giỏ Hàng</a>
+            </div>
+        </nav>
+
+        <div class="divider"></div>
+
+        <nav class="nav-section">
+            <div class="nav-title"></div>
+            <div class="nav-links">
+            </div>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <h1 class="project-title">KIỂM TRA SỨC KHỎE</h1>
+        <p class="instruction">Tải lên một hình ảnh để kiểm tra tình trạng sức khỏe của lá sầu riêng.</p>
+
+        <form method="post" enctype="multipart/form-data" class="upload-form">
+            <div class="c-box" style="display: flex; justify-content: space-between;">
+                {% if filename %}
+                <div class="upload-box">
+                        <img id="ub" src="{{ url_for('static', filename='uploads/' + filename) }}"
+                        style="width: 100%;"
+                        alt="Ảnh Đã Chọn">
+                    </div>
+                {% endif %}
+                <div class="upload-box">
+                    <input type="file" name="file" accept="image/*" required class="upload-input" onchange="showImage(event)">
+                    <!-- Đoạn văn bản này sẽ bị thay thể bởi ảnh người dùng chọn -->
+                    <p id="file-name">click to upload or drag and drop</p>
+                    <img id="selected-image" class="selected-image" alt="Ảnh Đã Chọn" style="display: none;">
+                </div>
+            </div>
+            <!-- Nút kiểm tra -->
+            <button type="submit" class="upload-button" id="check-button" style="display: block;">Kiểm Tra</button>
+            
+            <!-- Nút tải ảnh khác -->
+            <button type="button" class="upload-button" id="new-image-button" style="display: none;" onclick="resetImage()">Tải Ảnh Khác</button>
+        </form>
+    
+        <!-- Kết quả hiển thị sau khi kiểm tra -->
+        {% if filename %}
+            <div class="result-section">
+                <h2>Kết Quả Kiểm Tra</h2>
+                <div class="result-card">
+                    <!-- Hiển thị ảnh tải lên trong kết quả -->
+                    <div class="result-details">
+                        <p><strong>Tình Trạng Dự Đoán:</strong> {{ predicted_class }}</p>
+                        <p><strong>Độ Tin Cậy:</strong> {{ (confidence * 100) | round(2) }}%</p>
+                        <p><strong>Hướng Xử Lý:</strong> {{ treatment }}</p>
+                    </div>
+                    <img class="uploaded-image" src="{{ url_for('static', filename='uploads/' + filename) }}" alt="Ảnh Đã Chọn">
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    
+    
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
